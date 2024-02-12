@@ -21,11 +21,8 @@ var (
 
 func init() {
 	cmdMap = make(map[string]func(string) string)
-	cmdMap["(bin)"] = bin
-	cmdMap["(hex)"] = hex
-	cmdMap["(up)"] = strings.ToUpper
-	cmdMap["(low)"] = strings.ToLower
-	cmdMap["(cap)"] = capitalize
+	cmdMap["(bin"] = bin
+	cmdMap["(hex"] = hex
 	cmdMap["(up"] = strings.ToUpper
 	cmdMap["(low"] = strings.ToLower
 	cmdMap["(cap"] = capitalize
@@ -130,7 +127,9 @@ func execute(tokens []string) []string {
 	var ret []string
 	for i := 0; i < len(tokens); i++ {
 		w := tokens[i]
-		f := cmdMap[w]
+		target := strings.TrimSuffix(w, ")")
+		// fmt.Println(target)
+		f := cmdMap[target]
 		switch w {
 		case "(up)", "(low)", "(cap)", "(bin)", "(hex)":
 			count := 0

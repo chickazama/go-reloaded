@@ -11,10 +11,11 @@ import (
 const (
 	alphaOffset = 'a' - 'A'
 	expArgc     = 3
+	punc        = "[.,!?:;']+"
 )
 
 var (
-	re     = regexp.MustCompile("[.,!?:;']+")
+	re     = regexp.MustCompile(punc)
 	cmdMap map[string]func(string) string
 )
 

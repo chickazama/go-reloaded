@@ -54,32 +54,18 @@ func bin(str string) string {
 }
 
 func tokenize(str string) []string {
-	// Separate out all fields of original input
 	fields := strings.Fields(str)
-	// fmt.Println("FIELDS")
-	// for i, val := range fields {
-	// 	fmt.Printf("[%d]: %s\n", i, val)
-	// }
-	// fmt.Println()
 	var ret []string
-	// For each field, separate out all punctuation tokens
 	for _, f := range fields {
-		// Get the indices of occurrences of punctation expressions
 		locs := re.FindAllStringIndex(f, -1)
 		if locs != nil {
-			// Create a map to store reference to punctuation indices
 			idxs := make(map[int]bool)
 			for _, loc := range locs {
 				for _, v := range loc {
 					idxs[v] = true
 				}
 			}
-			// Define a string builder to build next token
 			var sb strings.Builder
-			// Iterate through each rune in the field
-			// If the index of that rune is in the map,
-			// append non-empty strings to the token set
-			// and reset the string builder.
 			for i, r := range f {
 				if idxs[i] {
 					if sb.Len() > 0 {
@@ -87,22 +73,13 @@ func tokenize(str string) []string {
 					}
 					sb.Reset()
 				}
-				// Write rune to string
 				sb.WriteRune(r)
 			}
-			// After all runes have been examined,
-			// append remaining string to return token set
 			ret = append(ret, sb.String())
 		} else {
-			// No tokens found, append field 'as is'.
 			ret = append(ret, f)
 		}
 	}
-	// fmt.Println("TOKENS")
-	// for i, val := range ret {
-	// 	fmt.Printf("[%d]: %s\n", i, val)
-	// }
-	// fmt.Println()
 	return ret
 }
 
@@ -128,7 +105,6 @@ func execute(tokens []string) []string {
 	for i := 0; i < len(tokens); i++ {
 		w := tokens[i]
 		target := strings.TrimSuffix(w, ")")
-		// fmt.Println(target)
 		f := cmdMap[target]
 		switch w {
 		case "(up)", "(low)", "(cap)", "(bin)", "(hex)":
@@ -159,11 +135,6 @@ func execute(tokens []string) []string {
 			ret = append(ret, w)
 		}
 	}
-	// fmt.Println("EXECUTED")
-	// for i, val := range ret {
-	// 	fmt.Printf("[%d]: %s\n", i, val)
-	// }
-	// fmt.Println()
 	return ret
 }
 
@@ -188,7 +159,6 @@ func build(tokens []string) string {
 }
 
 func main() {
-	// Get Command-Line Arguments
 	argc := len(os.Args)
 	if argc != expArgc {
 		msg := fmt.Sprintf("invalid argument count. expect 2 arguments corresponding to input/output file names. actual: %d\n", argc-1)
@@ -196,7 +166,6 @@ func main() {
 	}
 	inpath := os.Args[1]
 	outpath := os.Args[2]
-	// Read input file into buffer
 	buf, err := os.ReadFile(inpath)
 	if err != nil {
 		log.Fatal(err.Error())
@@ -204,7 +173,6 @@ func main() {
 	tokens := tokenize(string(buf))
 	exe := execute(tokens)
 	output := build(exe)
-	// fmt.Println(b)
 	err = os.WriteFile(outpath, []byte(output), 0664)
 	if err != nil {
 		log.Fatal(err.Error())

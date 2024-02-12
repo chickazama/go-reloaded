@@ -53,7 +53,7 @@ func bin(str string) string {
 	return strconv.Itoa(int(n))
 }
 
-func tokenize(str string) []string {
+func tokenizeInput(str string) []string {
 	fields := strings.Fields(str)
 	var ret []string
 	for _, f := range fields {
@@ -100,7 +100,7 @@ func getN(str string) int {
 	return n
 }
 
-func execute(tokens []string) []string {
+func executeCommands(tokens []string) []string {
 	var ret []string
 	for i := 0; i < len(tokens); i++ {
 		w := tokens[i]
@@ -138,7 +138,7 @@ func execute(tokens []string) []string {
 	return ret
 }
 
-func build(tokens []string) string {
+func buildOutput(tokens []string) string {
 	var sb strings.Builder
 	q := false
 	for i := range tokens {
@@ -170,9 +170,9 @@ func main() {
 	if err != nil {
 		log.Fatal(err.Error())
 	}
-	tokens := tokenize(string(buf))
-	exe := execute(tokens)
-	output := build(exe)
+	tokens := tokenizeInput(string(buf))
+	exe := executeCommands(tokens)
+	output := buildOutput(exe)
 	err = os.WriteFile(outpath, []byte(output), 0664)
 	if err != nil {
 		log.Fatal(err.Error())

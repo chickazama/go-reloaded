@@ -3,6 +3,7 @@ package main
 import (
 	"fmt"
 	"log"
+	"os"
 	"regexp"
 	"strconv"
 	"strings"
@@ -185,4 +186,28 @@ func build(tokens []string) string {
 		}
 	}
 	return sb.String()
+}
+
+func main() {
+	// Get Command-Line Arguments
+	argc := len(os.Args)
+	if argc != expArgc {
+		msg := fmt.Sprintf("invalid argument count. expect 2 arguments corresponding to input/output file names. actual: %d\n", argc-1)
+		log.Fatal(msg)
+	}
+	inpath := os.Args[1]
+	outpath := os.Args[2]
+	// Read input file into buffer
+	buf, err := os.ReadFile(inpath)
+	if err != nil {
+		log.Fatal(err.Error())
+	}
+	tokens := tokenize(string(buf))
+	exe := execute(tokens)
+	b := build(exe)
+	fmt.Println(b)
+	err = os.WriteFile(outpath, []byte(b), 0664)
+	if err != nil {
+		log.Fatal(err.Error())
+	}
 }

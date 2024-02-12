@@ -1,6 +1,7 @@
 package main
 
 import (
+	"fmt"
 	"log"
 	"os"
 	"regexp"
@@ -103,9 +104,45 @@ func executeCommands(tokens []string) []string {
 	var ret []string
 	for i := 0; i < len(tokens); i++ {
 		w := tokens[i]
+		fmt.Println(w)
 		target := strings.TrimSuffix(w, ")")
 		f := cmdMap[target]
-		switch w {
+		lowW := strings.ToLower(w)
+		switch lowW {
+		case "a":
+			next := false
+			j := 1
+			for !next && i+j < len(tokens) {
+				r := rune(strings.ToLower(tokens[i+j])[0])
+				if r >= 'a' && r <= 'z' {
+					switch r {
+					case 'a', 'e', 'i', 'o', 'u', 'h':
+						ret = append(ret, w+"n")
+					default:
+						ret = append(ret, w)
+					}
+					next = true
+				} else {
+					j++
+				}
+			}
+		case "an":
+			next := false
+			j := 1
+			for !next && i+j < len(tokens) {
+				r := rune(strings.ToLower(tokens[i+j])[0])
+				if r >= 'a' && r <= 'z' {
+					switch r {
+					case 'a', 'e', 'i', 'o', 'u', 'h':
+						ret = append(ret, w)
+					default:
+						ret = append(ret, w[:len(w)-1])
+					}
+					next = true
+				} else {
+					j++
+				}
+			}
 		case "(up)", "(low)", "(cap)", "(bin)", "(hex)":
 			count := 0
 			j := 1
@@ -129,18 +166,6 @@ func executeCommands(tokens []string) []string {
 					j++
 				}
 				i += 2
-			}
-		case "a", "an":
-			if i+1 >= len(tokens) {
-				ret = append(ret, w)
-			} else {
-				next := strings.ToLower(string(tokens[i+1][0]))
-				switch next {
-				case "a", "e", "i", "o", "u", "h":
-					ret = append(ret, "an")
-				default:
-					ret = append(ret, "a")
-				}
 			}
 		default:
 			ret = append(ret, w)

@@ -107,7 +107,7 @@ func executeCommands(tokens []string) []string {
 		f := cmdMap[target]
 		lowW := strings.ToLower(w)
 		switch lowW {
-		case "a":
+		case "a", "an":
 			next := false
 			j := 1
 			for !next && i+j < len(tokens) {
@@ -115,29 +115,17 @@ func executeCommands(tokens []string) []string {
 				if r >= 'a' && r <= 'z' {
 					switch r {
 					case 'a', 'e', 'i', 'o', 'u', 'h':
-						ret = append(ret, w+"n")
+						if lowW == "a" {
+							ret = append(ret, w+"n")
+						} else {
+							ret = append(ret, w)
+						}
 					default:
-						ret = append(ret, w)
-					}
-					next = true
-				} else {
-					j++
-				}
-			}
-			if !next {
-				ret = append(ret, w)
-			}
-		case "an":
-			next := false
-			j := 1
-			for !next && i+j < len(tokens) {
-				r := rune(strings.ToLower(tokens[i+j])[0])
-				if r >= 'a' && r <= 'z' {
-					switch r {
-					case 'a', 'e', 'i', 'o', 'u', 'h':
-						ret = append(ret, w)
-					default:
-						ret = append(ret, w[:len(w)-1])
+						if lowW == "a" {
+							ret = append(ret, w)
+						} else {
+							ret = append(ret, w[:len(w)-1])
+						}
 					}
 					next = true
 				} else {

@@ -166,8 +166,7 @@ func buildOutput(tokens []string) string {
 }
 
 func main() {
-	argc := len(os.Args)
-	if argc != expArgc {
+	if len(os.Args) != expArgc {
 		log.Fatal("invalid argument count. expect 2 arguments corresponding to input/output file names")
 	}
 	inpath := os.Args[1]

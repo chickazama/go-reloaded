@@ -124,3 +124,45 @@ func getN(str string) int {
 	}
 	return n
 }
+
+func execute(tokens []string) []string {
+	var ret []string
+	for i := 0; i < len(tokens); i++ {
+		w := tokens[i]
+		f := cmdMap[w]
+		switch w {
+		case "(up)", "(low)", "(cap)", "(bin)", "(hex)":
+			count := 0
+			j := 1
+			for count < 1 && len(ret)-j >= 0 {
+				if !re.MatchString(ret[len(ret)-j]) {
+					ret[len(ret)-j] = f(ret[len(ret)-j])
+					count++
+				}
+				j++
+			}
+		case "(up", "(cap", "(low":
+			if i+2 < len(tokens) {
+				n := getN(tokens[i+2])
+				count := 0
+				j := 1
+				for count < n && len(ret)-j >= 0 {
+					if !re.MatchString(ret[len(ret)-j]) {
+						ret[len(ret)-j] = f(ret[len(ret)-j])
+						count++
+					}
+					j++
+				}
+				i += 2
+			}
+		default:
+			ret = append(ret, w)
+		}
+	}
+	// fmt.Println("EXECUTED")
+	// for i, val := range ret {
+	// 	fmt.Printf("[%d]: %s\n", i, val)
+	// }
+	// fmt.Println()
+	return ret
+}

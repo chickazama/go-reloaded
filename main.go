@@ -131,6 +131,14 @@ func executeCommands(tokens []string) []string {
 				}
 				i += 2
 			}
+		case "a", "an":
+			next := strings.ToLower(string(tokens[i+1][0]))
+			switch next {
+			case "a", "e", "i", "o", "u", "h":
+				ret = append(ret, "an")
+			default:
+				ret = append(ret, "a")
+			}
 		default:
 			ret = append(ret, w)
 		}

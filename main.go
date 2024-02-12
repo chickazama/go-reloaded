@@ -1,6 +1,7 @@
 package main
 
 import (
+	"fmt"
 	"log"
 	"regexp"
 	"strconv"
@@ -52,4 +53,57 @@ func bin(str string) string {
 		log.Fatal(err.Error())
 	}
 	return strconv.Itoa(int(n))
+}
+
+func tokenize(str string) []string {
+	// Separate out all fields of original input
+	fields := strings.Fields(str)
+	// fmt.Println("FIELDS")
+	// for i, val := range fields {
+	// 	fmt.Printf("[%d]: %s\n", i, val)
+	// }
+	// fmt.Println()
+	var ret []string
+	// For each field, separate out all punctuation tokens
+	for _, f := range fields {
+		// Get the indices of occurrences of punctation expressions
+		locs := re.FindAllStringIndex(f, -1)
+		if locs != nil {
+			// Create a map to store reference to punctuation indices
+			idxs := make(map[int]bool)
+			for _, loc := range locs {
+				for _, v := range loc {
+					idxs[v] = true
+				}
+			}
+			// Define a string builder to build next token
+			var sb strings.Builder
+			// Iterate through each rune in the field
+			// If the index of that rune is in the map,
+			// append non-empty strings to the token set
+			// and reset the string builder.
+			for i, r := range f {
+				if idxs[i] {
+					if sb.Len() > 0 {
+						ret = append(ret, sb.String())
+					}
+					sb.Reset()
+				}
+				// Write rune to string
+				sb.WriteRune(r)
+			}
+			// After all runes have been examined,
+			// append remaining string to return token set
+			ret = append(ret, sb.String())
+		} else {
+			// No tokens found, append field 'as is'.
+			ret = append(ret, f)
+		}
+	}
+	fmt.Println("TOKENS")
+	for i, val := range ret {
+		fmt.Printf("[%d]: %s\n", i, val)
+	}
+	fmt.Println()
+	return ret
 }

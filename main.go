@@ -1,7 +1,6 @@
 package main
 
 import (
-	"fmt"
 	"log"
 	"os"
 	"regexp"
@@ -104,7 +103,6 @@ func executeCommands(tokens []string) []string {
 	var ret []string
 	for i := 0; i < len(tokens); i++ {
 		w := tokens[i]
-		fmt.Println(w)
 		target := strings.TrimSuffix(w, ")")
 		f := cmdMap[target]
 		lowW := strings.ToLower(w)
@@ -126,6 +124,9 @@ func executeCommands(tokens []string) []string {
 					j++
 				}
 			}
+			if !next {
+				ret = append(ret, w)
+			}
 		case "an":
 			next := false
 			j := 1
@@ -142,6 +143,9 @@ func executeCommands(tokens []string) []string {
 				} else {
 					j++
 				}
+			}
+			if !next {
+				ret = append(ret, w)
 			}
 		case "(up)", "(low)", "(cap)", "(bin)", "(hex)":
 			count := 0

@@ -101,11 +101,11 @@ func tokenize(str string) []string {
 			ret = append(ret, f)
 		}
 	}
-	fmt.Println("TOKENS")
-	for i, val := range ret {
-		fmt.Printf("[%d]: %s\n", i, val)
-	}
-	fmt.Println()
+	// fmt.Println("TOKENS")
+	// for i, val := range ret {
+	// 	fmt.Printf("[%d]: %s\n", i, val)
+	// }
+	// fmt.Println()
 	return ret
 }
 
@@ -204,9 +204,9 @@ func main() {
 	}
 	tokens := tokenize(string(buf))
 	exe := execute(tokens)
-	b := build(exe)
-	fmt.Println(b)
-	err = os.WriteFile(outpath, []byte(b), 0664)
+	output := build(exe)
+	// fmt.Println(b)
+	err = os.WriteFile(outpath, []byte(output), 0664)
 	if err != nil {
 		log.Fatal(err.Error())
 	}

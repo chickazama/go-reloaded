@@ -6,10 +6,7 @@ Go Reloaded is a [01Founders](https://github.com/01-edu) project to demonstrate 
 
 The following is an outline of the purpose of the project, from the 01Founders public repository. [Follow this link](https://github.com/01-edu/public/tree/master/subjects/go-reloaded) to view the original.
 
-- The code should respect the [**good practices**](../good-practices/README.md).
-- It is recommended to have **test files** for [unit testing](https://go.dev/doc/tutorial/add-a-test).
-
-The tool you are about to build will receive as arguments the name of a file containing a text that needs some modifications (the input) and the name of the file the modified text should be placed in (the output). Next is a list of possible modifications that your program should execute:
+"The tool you are about to build will receive as arguments the name of a file containing a text that needs some modifications (the input) and the name of the file the modified text should be placed in (the output). Next is a list of possible modifications that your program should execute:
 
 - Every instance of `(hex)` should replace the word before with the decimal version of the word (in this case the word will always be a hexadecimal number). (Ex: "1E (hex) files were added" -> "30 files were added")
 - Every instance of `(bin)` should replace the word before with the decimal version of the word (in this case the word will always be a binary number). (Ex: "It has been 10 (bin) years" -> "It has been 2 years")
@@ -56,4 +53,4 @@ Punctuation tests are... kinda boring, don't you think!?
 This project will help you learn about :
 
 - The Go file system(**fs**) API
-- String and numbers manipulation
+- String and numbers manipulation"
